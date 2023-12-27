@@ -44,10 +44,11 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
             bytes[i] = Byte.parseByte(byteValues[i].trim());
         }
 
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inMutable = true;
-        Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
+        Bitmap bmp = BitmapUtils.convertCompressedByteArrayToBitmap(bytes);
+
         holder.galleryImage.setImageBitmap(bmp);
+        holder.imageFilename.setText(model.getImageFilename());
+        holder.imageDateAdded.setText(model.getImageDateAdded());
     }
 
     @Override

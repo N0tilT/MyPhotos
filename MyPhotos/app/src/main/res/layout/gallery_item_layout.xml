@@ -32,7 +32,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:textSize="20sp"
-                android:text="QQQQ"/>
+                android:text=""/>
             <TextView
                 android:id="@+id/image_date_added"
                 android:layout_width="wrap_content"
@@ -41,7 +41,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:textSize="20sp"
-                android:text="QWERTY"/>
+                android:text=""/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

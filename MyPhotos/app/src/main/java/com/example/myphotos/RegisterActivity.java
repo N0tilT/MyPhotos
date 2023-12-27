@@ -84,10 +84,6 @@ public class RegisterActivity extends AppCompatActivity {
         password = Base64.getEncoder().encodeToString(hash);
         try {
             register();
-            Intent ScheduleIntent = new Intent(RegisterActivity.this, GalleryActivity.class);
-            ScheduleIntent.putExtra("user_id", user.getUserId());
-            ScheduleIntent.putExtra("user_name", user.getUserLogin());
-            startActivity(ScheduleIntent);
         } catch (Exception e) {
             Intent backIntent = new Intent(RegisterActivity.this, MainActivity.class);
             startActivity(backIntent);
@@ -101,7 +97,7 @@ public class RegisterActivity extends AppCompatActivity {
             try {
                 Socket socket = new Socket();
                 socket.connect(sa, 5000);
-                socket.setReceiveBufferSize(512);
+                socket.setReceiveBufferSize(4096);
 
                 OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
 
@@ -117,20 +113,14 @@ public class RegisterActivity extends AppCompatActivity {
                 }
 
                 out = new OutputStreamWriter(socket.getOutputStream());
-
-                //send login and password in correct format
                 out.write("/register@"+login+"@"+password);
                 out.flush();
 
                 in = new InputStreamReader(socket.getInputStream());
                 buf = new BufferedReader(in);
                 StringBuilder tmp = new StringBuilder();
-
-                while(!response_string.equals("}")){
-
-                    response_string = buf.readLine();
-                    tmp.append(response_string);
-                }
+                response_string = buf.readLine();
+                tmp.append(response_string);
                 socket.close();
                 StringBuilder builder = new StringBuilder();
                 int parenthesesCounter = 0;
@@ -141,16 +131,15 @@ public class RegisterActivity extends AppCompatActivity {
                     if(tmp.charAt(i) == '}'){
                         parenthesesCounter--;
                     }
-                    if(parenthesesCounter>1){
+                    if(parenthesesCounter>1) {
                         if (tmp.charAt(i) == '\"')
                         {
                             builder.append('\\');
                         }
                     }
                     builder.append(tmp.charAt(i));
-
                 }
-                String finalResponse_string = tmp.toString();
+                String finalResponse_string = builder.toString();
                 runOnUiThread(() -> {
                     Response response;
                     try {
@@ -165,6 +154,15 @@ public class RegisterActivity extends AppCompatActivity {
                             throw new RuntimeException(e);
                         }
                     }
+                    else{
+                        Toast.makeText(this, "Такой пользователь уже существует.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    Intent ScheduleIntent = new Intent(RegisterActivity.this, GalleryActivity.class);
+                    ScheduleIntent.putExtra("user_id", user.getUserId());
+                    ScheduleIntent.putExtra("user_name", user.getUserLogin());
+                    startActivity(ScheduleIntent);
                 });
 
             } catch (Exception ex) {

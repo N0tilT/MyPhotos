@@ -50,13 +50,17 @@ public class GalleryActivity extends AppCompatActivity {
         userId = intent.getIntExtra("user_id",-1);
         userName = intent.getStringExtra("user_name");
 
-
         GetImages(userId);
 
         backBtn.setOnClickListener((View.OnClickListener) view -> {
             Intent MainIntent = new Intent(GalleryActivity.this, MainActivity.class);
             MainIntent.putExtra("user_id",userId);
             startActivity(MainIntent);
+        });
+        gotoAddBtn.setOnClickListener((View.OnClickListener) view -> {
+            Intent addIntent = new Intent(GalleryActivity.this, AddPhotoActivity.class);
+            addIntent.putExtra("user_id",userId);
+            startActivity(addIntent);
         });
     }
 
@@ -66,7 +70,7 @@ public class GalleryActivity extends AppCompatActivity {
             try {
                 Socket socket = new Socket();
                 socket.connect(sa, 5000);
-                socket.setReceiveBufferSize(4096);
+                socket.setReceiveBufferSize(1024*10);
 
                 OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
 
@@ -86,12 +90,14 @@ public class GalleryActivity extends AppCompatActivity {
 
                 out.write("/getImages@"+userId);
                 out.flush();
+
                 in = new InputStreamReader(socket.getInputStream());
                 buf = new BufferedReader(in);
                 StringBuilder tmp = new StringBuilder();
                 response_string = buf.readLine();
                 tmp.append(response_string);
                 socket.close();
+
                 StringBuilder builder = new StringBuilder();
                 int parenthesesCounter = 0;
                 for (int j = 0; j < tmp.length(); j++) {

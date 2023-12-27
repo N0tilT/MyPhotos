@@ -26,7 +26,7 @@ import java.util.Base64;
 
 public class LoginActivity extends AppCompatActivity {
     public static String host = "82.179.140.18";
-    public static int port = 45111;
+    public static int port = 45133;
     public static String password;
     public static String login;
 
@@ -100,7 +100,7 @@ public class LoginActivity extends AppCompatActivity {
             try {
                 Socket socket = new Socket();
                 socket.connect(sa, 5000);
-                socket.setReceiveBufferSize(4096);
+                socket.setReceiveBufferSize(1024*10);
 
                 OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
 
@@ -116,7 +116,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 out = new OutputStreamWriter(socket.getOutputStream());
-                out.write("/login@"+login+"@"+password);
+                out.write("/login|"+login+"@"+password);
                 out.flush();
 
                 in = new InputStreamReader(socket.getInputStream());
@@ -156,6 +156,10 @@ public class LoginActivity extends AppCompatActivity {
                         } catch (JsonProcessingException e) {
                             throw new RuntimeException(e);
                         }
+                    }
+                    else{
+                        Toast.makeText(this, "Неверное имя пользователя или пароль.", Toast.LENGTH_SHORT).show();
+                        return;
                     }
                     Intent ScheduleIntent = new Intent(LoginActivity.this, GalleryActivity.class);
                     ScheduleIntent.putExtra("user_id", user.getUserId());
