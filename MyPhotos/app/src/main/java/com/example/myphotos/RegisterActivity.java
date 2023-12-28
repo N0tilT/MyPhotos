@@ -113,7 +113,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }
 
                 out = new OutputStreamWriter(socket.getOutputStream());
-                out.write("/register@"+login+"@"+password);
+                out.write("/register|"+login+"@"+password);
                 out.flush();
 
                 in = new InputStreamReader(socket.getInputStream());

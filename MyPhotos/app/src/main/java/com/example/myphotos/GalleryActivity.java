@@ -88,7 +88,7 @@ public class GalleryActivity extends AppCompatActivity {
 
                 out = new OutputStreamWriter(socket.getOutputStream());
 
-                out.write("/getImages@"+userId);
+                out.write("/getImages|"+userId);
                 out.flush();
 
                 in = new InputStreamReader(socket.getInputStream());

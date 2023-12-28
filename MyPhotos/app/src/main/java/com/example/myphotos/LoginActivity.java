@@ -26,7 +26,7 @@ import java.util.Base64;
 
 public class LoginActivity extends AppCompatActivity {
     public static String host = "82.179.140.18";
-    public static int port = 45137;
+    public static int port = 45138;
     public static String password;
     public static String login;
 
