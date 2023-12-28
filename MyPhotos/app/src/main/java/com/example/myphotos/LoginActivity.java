@@ -26,7 +26,7 @@ import java.util.Base64;
 
 public class LoginActivity extends AppCompatActivity {
     public static String host = "82.179.140.18";
-    public static int port = 45137;
+    public static int port = 45138;
     public static String password;
     public static String login;
 
@@ -161,10 +161,10 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(this, "Неверное имя пользователя или пароль.", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    Intent ScheduleIntent = new Intent(LoginActivity.this, GalleryActivity.class);
-                    ScheduleIntent.putExtra("user_id", user.getUserId());
-                    ScheduleIntent.putExtra("user_name", user.getUserLogin());
-                    startActivity(ScheduleIntent);
+                    Intent GalleryActivity = new Intent(LoginActivity.this, GalleryActivity.class);
+                    GalleryActivity.putExtra("user_id", user.getUserId());
+                    GalleryActivity.putExtra("user_name", user.getUserLogin());
+                    startActivity(GalleryActivity);
                 });
 
             } catch (Exception ex) {

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -29,8 +30,8 @@ public class GalleryActivity extends AppCompatActivity {
     RecyclerView.Adapter mAdapter;
 
     private static final ObjectMapper mapper = new ObjectMapper();
-    Button backBtn;
-    Button gotoAddBtn;
+    ImageButton backBtn;
+    ImageButton gotoAddBtn;
     private int userId;
     private String userName;
     @Override
@@ -96,6 +97,9 @@ public class GalleryActivity extends AppCompatActivity {
                 StringBuilder tmp = new StringBuilder();
                 response_string = buf.readLine();
                 tmp.append(response_string);
+
+
+
                 socket.close();
 
                 StringBuilder builder = new StringBuilder();

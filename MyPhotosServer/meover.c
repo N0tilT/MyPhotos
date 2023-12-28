@@ -12,10 +12,9 @@
 
 void sigint_handler(int signum);  // обработка сигнала Ctrl+C
 
-int PORT = 45137;
+int PORT = 45138;
 char *welcome = "Welcome to the server\n";
 #define BUFLEN 4096
-#define BIGBUFLEN 1024*10*1024
 #define MAX_CLIENTS 6
 const static char conninfo[] = "hostaddr=82.179.140.18 port=5432 dbname=myPhotos user=mpi password=135a1";
 const char* HELP_MESSAGE = "/quit - выйти с сервера;\n/register - зарегистрировать новый аккаунт;\n/login - войти в существующий аккаунт;\n";
@@ -362,11 +361,11 @@ struct Response* processRequest(PGconn* conn,int fd,char* command, char* request
 
         int howManyPics = atoi(sql_result);
         printf("%i\n",howManyPics);
-        char sql_result_images [BIGBUFLEN*howManyPics];
-        executeSQL(conn, "SELECT * FROM images WHERE user_id =$1", parameter, 1,sql_result_images);
+        //char sql_result_images [BIGBUFLEN*howManyPics];
+        executeSQL(conn, "SELECT * FROM images WHERE user_id =$1", parameter, 1,sql_result);
 
 
-        if(strlen(sql_result_images) == 1){
+        if(strlen(sql_result) == 1){
             type = FAIL;
             response_p->type = type;
             response_p->response_message = "Not found";
@@ -374,8 +373,8 @@ struct Response* processRequest(PGconn* conn,int fd,char* command, char* request
         }
         type = SUCCESS;
         response_p->type = type;
-        char serialized[BIGBUFLEN] = "";
-        serialize(sql_result_images,serialized);
+        char serialized[BUFLEN] = "";
+        serialize(sql_result,serialized);
         strcpy(response_p->response_message,serialized);
         return response_p;
     }
@@ -403,50 +402,50 @@ struct Response* processRequest(PGconn* conn,int fd,char* command, char* request
         return response_p;
         
     }
-    if(strcmp(command,"/postImage")==0){
-        printf("\npostImage\n");
-        char temp[BIGBUFLEN];
-        strcat(temp,strtok(NULL,"@"));
-        char recvbuf[BUFLEN];
-        while (1)
-        {
-            int res = recv(fd, recvbuf, BUFLEN, 0);
-            if (res > 0)
-            {
-                strcat(temp,recvbuf);
-                if (recvbuf[res-1]=='}') break;                
-            }
-        }
-        char deserialized[BIGBUFLEN] = "";
-        deserialize(temp,deserialized);        
-        char* tmp = strdup(deserialized);
-        char* param1 = strtok(tmp, ",");
-        char* param2 = strtok(NULL,",");
-        char* param3 = strtok(NULL,",");
-        char* param4 = strtok(NULL,",");
-        char* param5 = strtok(NULL,",");
+    // if(strcmp(command,"/postImage")==0){
+    //     printf("\npostImage\n");
+    //     //char temp[BIGBUFLEN];
+    //     strcat(temp,strtok(NULL,"@"));
+    //     char recvbuf[BUFLEN];
+    //     while (1)
+    //     {
+    //         int res = recv(fd, recvbuf, BUFLEN, 0);
+    //         if (res > 0)
+    //         {
+    //             strcat(temp,recvbuf);
+    //             if (recvbuf[res-1]=='}') break;                
+    //         }
+    //     }
+    //     char deserialized[BUFLEN] = "";
+    //     deserialize(temp,deserialized);        
+    //     char* tmp = strdup(deserialized);
+    //     char* param1 = strtok(tmp, ",");
+    //     char* param2 = strtok(NULL,",");
+    //     char* param3 = strtok(NULL,",");
+    //     char* param4 = strtok(NULL,",");
+    //     char* param5 = strtok(NULL,",");
 
-        const char* parameter[] = { param1, param2, param3,param4,param5};
-        parameter[0] = param1;
-        parameter[1] = param2;
-        parameter[2] = param3;
-        parameter[3] = param4;
-        parameter[4] = param5;
+    //     const char* parameter[] = { param1, param2, param3,param4,param5};
+    //     parameter[0] = param1;
+    //     parameter[1] = param2;
+    //     parameter[2] = param3;
+    //     parameter[3] = param4;
+    //     parameter[4] = param5;
 
-        executeSQL(conn, "INSERT INTO homework (image_bytes, image_date_added, user_id, image_filename, image_fileextension) VALUES ($1,$2,$3,$4,$5)", parameter, 5,sql_result);
+    //     executeSQL(conn, "INSERT INTO homework (image_bytes, image_date_added, user_id, image_filename, image_fileextension) VALUES ($1,$2,$3,$4,$5)", parameter, 5,sql_result);
 
-        if(strcmp(sql_result,"-1") == 0){
-            type = FAIL;
-            response_p->type = type;
-            response_p->response_message = "Deletion failed.";
-            return response_p;
-        }
+    //     if(strcmp(sql_result,"-1") == 0){
+    //         type = FAIL;
+    //         response_p->type = type;
+    //         response_p->response_message = "Deletion failed.";
+    //         return response_p;
+    //     }
 
-        type = SUCCESS;
-        response_p->type = type;
-        strcpy(response_p->response_message,"Item added successfully.");
-        return response_p;
-    }
+    //     type = SUCCESS;
+    //     response_p->type = type;
+    //     strcpy(response_p->response_message,"Item added successfully.");
+    //     return response_p;
+    // }
 
     printf("BadRequest\n");
     type = FAIL;
