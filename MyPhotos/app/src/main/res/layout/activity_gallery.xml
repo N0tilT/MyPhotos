@@ -18,26 +18,35 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5sp"
+        android:layout_height="70dp"
+        android:background="#9677AF"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <Button
+        <ImageButton
             android:id="@+id/back_button"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_margin="5sp"
-            android:text="На главную"
-            app:layout_constraintStart_toStartOf="parent" />
-        <Button
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/gallery"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteY="5dp" />
+
+        <ImageButton
             android:id="@+id/go_to_add_button"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_margin="5sp"
-            android:text="Добавить фото"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/add"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="5dp"
+            android:background="@null"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:layout_editor_absoluteY="5dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -26,7 +26,7 @@ import java.util.Base64;
 
 public class LoginActivity extends AppCompatActivity {
     public static String host = "82.179.140.18";
-    public static int port = 45133;
+    public static int port = 45187;
     public static String password;
     public static String login;
 
@@ -100,7 +100,7 @@ public class LoginActivity extends AppCompatActivity {
             try {
                 Socket socket = new Socket();
                 socket.connect(sa, 5000);
-                socket.setReceiveBufferSize(1024*10);
+                socket.setReceiveBufferSize(4096);
 
                 OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
 
